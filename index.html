@@ -17,19 +17,19 @@
   <div class="container navbar navbar-dark bg-primary ">
     <div class="container row menu">
       <div class="col-md-12 "><h1>KICK THE BOX</h1></div>
-      <div class="col-2 align-self-end"><input class="btn btn-primary" type="button" value="START"></div>
-      <div class="col-2 align-self-end"><input class="btn btn-primary" type="button" value="NEW GAME"></div>
+      <div id="start" class="col-2 align-self-end"><input class="btn btn-primary" type="button" value="START"></div>
+      <div id="new game" class="col-2 align-self-end"><input class="btn btn-primary" type="button" value="NEW GAME"></div>
       <div class="col"></div>
 
       <div class="col-2 align-self-end"><div class="card text-white bg-primary mb-3" >
         <div class="card-header">Point</div>
-        <div class="card-body"></div> 
-                         </div>
+        <div id ="point" class="card-body"> </div> 
+                                        </div>
       </div>
 
       <div class="col-2 align-self-end"><div class="card text-white bg-primary mb-3" >
         <div class="card-header">Time</div>
-        <div class="card-body"></div> 
+        <div id="time" class="card-body"></div> 
                         </div>
     </div>
 
@@ -149,22 +149,16 @@
        
         <div class="row result">
           <div class="col"><div class="card text-white bg-primary mb-3" >
-            <div class="card-header">Result</div>
-            <div class="card-body"></div> 
+            <div class="card-header">Result table</div>
+            <div id="score"class="card-body"></div> 
                            </div>
             </div>
-        </div>
-
-        <div class="row result">
-          <div class="col"><div class="card text-white bg-primary mb-3" >
-            <div class="card-header">Score</div>
-            <div class="card-body"></div> 
-                           </div>
-            </div>
-        </div>        
+        </div>       
       </div>    
     </div>   
   </div>   
+  <div></div>
+
     
     <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

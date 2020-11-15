@@ -33,3 +33,6 @@
     width: 3rem;
     height: 3rem;    
 }
+.card-body {
+    height: 65px;
+}
