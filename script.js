@@ -6,7 +6,7 @@ let newGame=document.getElementById('new game');
 let point=document.getElementById('point');
 let time=document.getElementById('time');
 let score=document.getElementById('score');
-name=String;
+
 
 //таймер
 function starttimer(){
@@ -32,6 +32,13 @@ function NG(){
     else {    
      if ( confirm('Do you want a start New game?')) { 
          document.location.reload();
+         playing=false;
+         timenow=-1;
+         point=0;
+         NG();
+         
+         
+         
     }
     }
 }
@@ -55,8 +62,8 @@ for (let i=0 ; i<cell.length; i++){
 // создание ящика
 function createbox(){
     function generateBox(){
-        let posX= Math.round(Math.random()*(11-1)+1);
-        let posY= Math.round(Math.random()*(8-1)+1);
+        let posX= Math.round(Math.random()*(11)+0.5);
+        let posY= Math.round(Math.random()*(8)+0.5);
         return[posX, posY];
     }
     let coordinates=generateBox();
@@ -64,6 +71,16 @@ function createbox(){
     coordinates[1]+`"]`);
     
     if (box.classList.contains('box')){createbox()};
+    
+    let pp=0;
+    
+    for (let i=0 ; i<cell.length; i++){
+       
+       if (cell[i].classList.contains('box')==true){pp+=1};
+       
+    }
+    if (pp=0){createbox()};
+    
     
     
     
@@ -74,7 +91,7 @@ function createbox(){
 
         // от 0 одного до 2
        function boxlevel(){
-        for (let i=0; i<(Math.round(Math.random()*(2-1)+1)); i++){
+        for (let i=0; i<(Math.round(Math.random()*(3)-0.5)); i++){
             createbox()
         }
     }
