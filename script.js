@@ -1,44 +1,51 @@
 "use strict"
 let playing=false;
 let click=1;
-let timenow=60;
+let oneminute=60;
 let newGame=document.getElementById('new game');
 let point=document.getElementById('point');
-let time=document.getElementById('time');
+let timedisplay=document.getElementById('time');
 let score=document.getElementById('score');
 
 
 //таймер
-function starttimer(){
-    let int=setInterval(timer, 1000);
-    
+function starttimer(oneminute,timedisplay){
+    let start=Date.now(); 
+                  
     
     function timer(){
-    let minutes = Math.floor(timenow/60);
-    let seconds= timenow % 60;
-    seconds= seconds<10?"0"+ seconds:seconds;
-    time.textContent=`${minutes}:${seconds}`;
-    timenow--;
-    if (timenow<0) {clearInterval(int)};
-}
+        let diff=oneminute-(((Date.now()-start)/1000)| 0);
+        let minutes = (diff/60) | 0;
+        let seconds= (diff % 60) | 0;
+        minutes=minutes<10 ?"0"+ minutes:minutes;
+        seconds= seconds<10?"0"+ seconds:seconds;
+        timedisplay.textContent=minutes + ":"+ seconds;    
+        if (diff<=0) {clearInterval(intervalID)};
+    }
+
+timer();
+let intervalID=setInterval(timer, 1000);
+
 }
 
 //новая игра
 function NG(){
     if (playing == false){    
-     starttimer()
-     boxlevel()
-     playing=true} 
+        playing=true;
+        starttimer(oneminute,timedisplay);
+        boxlevel()
+        } 
     else {    
-     if ( confirm('Do you want a start New game?')) { 
-         document.location.reload();
+     if ( confirm('Do you want start a New game?')) { 
+        
          playing=false;
-         timenow=-1;
-         point=0;
-         NG();
+         click=1;
+         clearInterval(intervalID);
+         oneminute=60;
          
+        NG();
          
-         
+               
     }
     }
 }
@@ -46,55 +53,50 @@ function NG(){
 newGame.onclick=NG;
 
 
-//координаты ячеек
-let cell= document.getElementsByClassName("cell")
-let x= 1;
-let y= 1;
-for (let i=0 ; i<cell.length; i++){
-    cell[i].setAttribute('posX', x);
-    cell[i].setAttribute('posY', y);
-    x++;
-    if (x==12) {
-        x=1;
-        y++}    
+//создаем поле
+let gamefield=document.querySelector('body > div > div.row.gamefield > div > div.container.row.gamefield');
+for (let i=1; i<=99; i++){
+    let cell = document.createElement('div');
+    cell.className="coll cell";
+    cell.setAttribute('num', i);
+    gamefield.append(cell);    
 }
+   let cell=document.getElementsByClassName('cell');
+
+
 
 // создание ящика
 function createbox(){
+    
     function generateBox(){
-        let posX= Math.round(Math.random()*(11)+0.5);
-        let posY= Math.round(Math.random()*(8)+0.5);
-        return[posX, posY];
-    }
+        let num= Math.round(Math.random()*(cell.length)+0.5);
+         return[num];
+        }
+
     let coordinates=generateBox();
-    let box=document.querySelector(`[posX="` + coordinates[0]+`"][posY = "` +
-    coordinates[1]+`"]`);
+    let box=document.querySelector(`[num="` + coordinates[0]+`"]`);
     
-    if (box.classList.contains('box')){createbox()};
-    
-    let pp=0;
-    
-    for (let i=0 ; i<cell.length; i++){
-       
-       if (cell[i].classList.contains('box')==true){pp+=1};
-       
-    }
-    if (pp=0){createbox()};
-    
-    
-    
+    if (box.classList.contains('box')) {createbox()};
     
     box.classList.add('box');  
     box.addEventListener('click',clickBox);  
-
 }
 
-        // от 0 одного до 2
-       function boxlevel(){
-        for (let i=0; i<(Math.round(Math.random()*(3)-0.5)); i++){
+ // генерация кол-ва кубиков за клик от 0  до 2
+function boxlevel(){
+    for (let i=0; i<(Math.round(Math.random()*(3)-0.5)); i++){
             createbox()
         }
+        let BoxOnField=0;
+    
+        for (let i=0 ; i<cell.length; i++){
+           
+           if (cell[i].classList.contains('box')==true){BoxOnField+=1};
+           
+        }
+           if (BoxOnField==0){createbox()};
     }
+
     //клик по ящику
     function clickBox(){
         point.textContent = click++;
@@ -104,13 +106,8 @@ function createbox(){
 
     }
     function gameover() {
-        prompt('Enter you Name', name);
-        for(let i=0; i,localStorage.length; i++){
-            let key= localStorage.key(i);
-        }
-        
-
-    }
+               }
+     
     
    
 
