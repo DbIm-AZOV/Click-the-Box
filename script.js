@@ -1,112 +1,135 @@
 "use strict"
-let playing=false;
-let click=1;
-let oneminute=60;
-let newGame=document.getElementById('new game');
-let point=document.getElementById('point');
-let timedisplay=document.getElementById('time');
-let score=document.getElementById('score');
+let playing= false;
+let pausef= false;
+let click= 1;
+let startTime= Date.now();
+let intervalID;
+let curentTime;
+const timeForGame= 60;
+const start= document.getElementById('start');
+const newGame= document.getElementById('new game');
+const point= document.getElementById('point');
+const timeDisplay= document.getElementById('time');
+const score= document.getElementById('score');
+const gamefield= document.querySelector('body > div > div.row.gamefield > div > div.container.row.gamefield');
+const cellColection=document.getElementsByClassName('cell');
 
+newGame.onclick= newGames;
+start.onclick= startPaused;
 
 //таймер
-function starttimer(oneminute,timedisplay){
-    let start=Date.now(); 
-                  
-    
-    function timer(){
-        let diff=oneminute-(((Date.now()-start)/1000)| 0);
-        let minutes = (diff/60) | 0;
-        let seconds= (diff % 60) | 0;
-        minutes=minutes<10 ?"0"+ minutes:minutes;
-        seconds= seconds<10?"0"+ seconds:seconds;
-        timedisplay.textContent=minutes + ":"+ seconds;    
-        if (diff<=0) {clearInterval(intervalID)};
-    }
-
-timer();
-let intervalID=setInterval(timer, 1000);
-
+function timerStart() {
+  startTime= Date.now(); 
+  timer();
+  intervalID= setInterval(timer, 1000);        
 }
 
+function timer() {       
+  curentTime= Math.floor(timeForGame - (((Date.now() - startTime) / 1000)));
+  timeDisplay.textContent= curentTime;
+
+  if (curentTime <= 0) clearInterval(intervalID);    
+}
+
+function timerStop() {
+  clearInterval(intervalID);
+}
+
+
+//cтарт-пауза
+function startPaused(){
+  if (playing == true){
+    alert("On paused");
+  }
+  if ((click == 1) && (playing == false)) {
+    newGames();
+  }
+
+
+
+}
 //новая игра
-function NG(){
-    if (playing == false){    
-        playing=true;
-        starttimer(oneminute,timedisplay);
-        boxlevel()
-        } 
-    else {    
-     if ( confirm('Do you want start a New game?')) { 
-        
-         playing=false;
-         click=1;
-         clearInterval(intervalID);
-         oneminute=60;
-         
-        NG();
-         
-               
-    }
-    }
+function newGames() {
+  if (playing == false) {    
+    playing= true;
+    timerStart();
+    boxlevel();        
+  } else {
+      if (confirm('Do you want start a New game?')) {        
+        gameOver();      
+        newGames();
+        click=1;
+      }
+    }   
 }
-
-newGame.onclick=NG;
-
 
 //создаем поле
-let gamefield=document.querySelector('body > div > div.row.gamefield > div > div.container.row.gamefield');
-for (let i=1; i<=99; i++){
-    let cell = document.createElement('div');
-    cell.className="coll cell";
-    cell.setAttribute('num', i);
-    gamefield.append(cell);    
+for (let i= 1; i <= 99; i++) {
+  const cell= document.createElement('div');
+  cell.className= "coll cell";
+  cell.setAttribute('num', i);
+  gamefield.append(cell);    
 }
-   let cell=document.getElementsByClassName('cell');
-
-
-
+ 
 // создание ящика
-function createbox(){
-    
-    function generateBox(){
-        let num= Math.round(Math.random()*(cell.length)+0.5);
-         return[num];
-        }
+function createbox() {
+ 
+  function generateBox() {
+    let num= Math.round(Math.random() * (cellColection.length) + 0.5);
+    return[num];
+    }
 
-    let coordinates=generateBox();
-    let box=document.querySelector(`[num="` + coordinates[0]+`"]`);
+  let coordinates=generateBox();
+  let box= document.querySelector(`[num="` + coordinates[0] + `"]`);
+  if (box.classList.contains('box')) {
+      createbox()};
     
-    if (box.classList.contains('box')) {createbox()};
-    
-    box.classList.add('box');  
-    box.addEventListener('click',clickBox);  
+  box.classList.add('box');  
+  box.addEventListener('click', clickBox);  
 }
 
- // генерация кол-ва кубиков за клик от 0  до 2
-function boxlevel(){
-    for (let i=0; i<(Math.round(Math.random()*(3)-0.5)); i++){
-            createbox()
-        }
-        let BoxOnField=0;
+ 
+// генерация кол-ва кубиков за клик от 0  до 2
+function boxlevel() {
+  for (let i= 0; i < (Math.round(Math.random() * (3) - 0.5)); i++) {
+    createbox()
+  }
+        
+  let BoxOnField= 0;
     
-        for (let i=0 ; i<cell.length; i++){
-           
-           if (cell[i].classList.contains('box')==true){BoxOnField+=1};
-           
+  for (let i = 0; i < cellColection.length; i++) {
+    if (cellColection[i].classList.contains('box')) {
+        BoxOnField += 1
+    };
+  }
+    if (BoxOnField == 0) {
+        createbox()
+    };
+}
+
+//клик по ящику
+function clickBox() {
+  point.textContent= click++;
+  this.classList.remove('box');
+  this.removeEventListener('click', clickBox );    
+  boxlevel();
+}
+
+
+function gameOver() {    
+    
+    for (let i = 0; i < cellColection.length; i++) {
+        if (cellColection[i].classList.contains('box')) {
+            cellColection[i].classList.remove('box');
+            cellColection[i].removeEventListener('click', clickBox );
         }
-           if (BoxOnField==0){createbox()};
     }
 
-    //клик по ящику
-    function clickBox(){
-        point.textContent = click++;
-        this.classList.remove('box');
-        this.removeEventListener('click',clickBox);    
-        boxlevel();
-
-    }
-    function gameover() {
-               }
+    playing= false;
+    timerStop(); 
+    click=0;
+    point.textContent= click;
+}
      
     
    

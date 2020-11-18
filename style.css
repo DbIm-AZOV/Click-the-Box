@@ -1,38 +1,38 @@
 .container {
-    min-width: 46rem;    
+  min-width: 46rem;    
 }
 
 .body.container{
-    min-width: 46rem;
+  min-width: 46rem;
 }
 
 .gamefield{
-    background-color: rgb(143, 201, 219);
+  background-color: rgb(143, 201, 219);
 }
 
 .result{
-    background-color: rgb(101, 162, 243);
+  background-color: rgb(101, 162, 243);
 }
 
 .body.col {
-    min-width: 4rem;
+  min-width: 4rem;
 }
 
 .body.col-2{
-    min-width: 8rem;
+  min-width: 8rem;
 }
 
 .cell{
-    border:0.01rem solid rgb(42, 123, 216);
-    width: 3rem;
-    height: 3rem;    
+  border:0.01rem solid rgb(42, 123, 216);
+  width: 3rem;
+  height: 3rem;    
 }
 
 .box{
-    background-color: red;
-    width: 3rem;
-    height: 3rem;    
+  background-color: red;
+  width: 3rem;
+  height: 3rem;    
 }
 .card-body {
-    height: 65px;
+  height: 65px;
 }
