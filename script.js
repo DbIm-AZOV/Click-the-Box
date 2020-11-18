@@ -1,6 +1,5 @@
 "use strict"
 let playing= false;
-let pausef= false;
 let click= 1;
 let startTime= Date.now();
 let intervalID;
@@ -44,10 +43,9 @@ function startPaused(){
   if ((click == 1) && (playing == false)) {
     newGames();
   }
-
-
-
 }
+
+
 //новая игра
 function newGames() {
   if (playing == false) {    
@@ -63,6 +61,7 @@ function newGames() {
     }   
 }
 
+
 //создаем поле
 for (let i= 1; i <= 99; i++) {
   const cell= document.createElement('div');
@@ -71,6 +70,7 @@ for (let i= 1; i <= 99; i++) {
   gamefield.append(cell);    
 }
  
+
 // создание ящика
 function createbox() {
  
@@ -106,6 +106,7 @@ function boxlevel() {
         createbox()
     };
 }
+
 
 //клик по ящику
 function clickBox() {
