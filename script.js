@@ -139,7 +139,7 @@ function gameOver() {
 
   localStorage.setItem(user).JSON.stringify(user);
   user = JSON.parse(localStorage.getItem("user"));
-  
+
     for (let i = 0; i < cellColection.length; i++) {
         if (cellColection[i].classList.contains('box')) {
             cellColection[i].classList.remove('box');
@@ -153,6 +153,3 @@ function gameOver() {
     point.textContent = click;
 }
 
-function sortByScore(){
-  results
-}
