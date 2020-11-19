@@ -23,7 +23,7 @@
 }
 
 .cell{
-  border:0.01rem solid rgb(42, 123, 216);
+  border: 0.01rem solid rgb(42, 123, 216);
   width: 3rem;
   height: 3rem;    
 }
@@ -34,5 +34,5 @@
   height: 3rem;    
 }
 .card-body {
-  height: 65px;
+  min-height: 65px;
 }
