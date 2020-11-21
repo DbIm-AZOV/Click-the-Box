@@ -35,3 +35,7 @@
 }
 .card-body {
   height: 5rem;}
+
+  #score.card-body {
+    height: 16rem;
+}
