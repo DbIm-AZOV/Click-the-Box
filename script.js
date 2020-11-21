@@ -4,8 +4,6 @@ let click = 1;
 let startTime;
 let intervalID;
 let curentTime;
-let name;
-let result;
 let results = [];
 let timeForGame = 60;
 const start = document.getElementById('start');
@@ -13,13 +11,26 @@ const newGame = document.getElementById('new game');
 const point = document.getElementById('point');
 const timeDisplay = document.getElementById('time');
 const resultTable = document.getElementById('score');
-const gamefield = document.querySelector('body > div > div.row.gamefield > div > div.container.row.gamefield');
+const gamefield = document.getElementById('gamefield');
 const cellColection = document.getElementsByClassName('cell');
+const clear = document.getElementById('clear');
 
 
+results = JSON.parse(localStorage.getItem("results") || "[]");
+resultTable.textContent = JSON.stringify(results).replace( /[ {"} ]/g, " ");
 newGame.onclick = newGames;
 start.onclick = startAndPaused;
+clear.onclick = clearResult;
 
+
+function clearResult() {
+  if (confirm('Do you want clear result?')){
+    localStorage.clear(); 
+    results = JSON.parse(localStorage.getItem("results") || "[]");
+    resultTable.textContent = JSON.stringify(results).replace( /[ {"} ]/g, " ");
+  } 
+
+}
 //таймер
 function startTimer() {
   startTime = Date.now(); 
@@ -76,7 +87,7 @@ function newGames() {
 
 
 //создаем поле
-for (let i = 1; i <= 99; i++) {
+for (let i = 1; i <= 60; i++) {
   const cell = document.createElement('div');
   cell.className = "coll cell";
   cell.setAttribute('num', i);
@@ -129,27 +140,26 @@ function clickBox() {
   createFewBoxes();
 }
 
-
 function gameOver() { 
- 
+  results = JSON.parse(localStorage.getItem("results") || "[]");
   let user = {Name: prompt(`Game over! Yours score = ${click-1} Enter your name`,''), Result: click - 1};
-  results.push(user);
-  results.sort((a, b) => a.result < b.result ? 1 : -1);
-  resultTable.textContent = JSON.stringify(results).replace( /[ {"} ]+/g, " ");  
-
-  localStorage.setItem(user).JSON.stringify(user);
-  user = JSON.parse(localStorage.getItem("user"));
-
-    for (let i = 0; i < cellColection.length; i++) {
-        if (cellColection[i].classList.contains('box')) {
-            cellColection[i].classList.remove('box');
-            cellColection[i].removeEventListener('click', clickBox );
-        }
+  if (user.Name != null) {
+    results.push(user);
+    results.sort((a, b) => a.Result < b.Result ? 1 : -1 );
+    localStorage.setItem("results", JSON.stringify(results));
+    resultTable.textContent = JSON.stringify(results).replace( /[ {"} ]/g, " ");  
+  }
+  
+  for (let i = 0; i < cellColection.length; i++) {
+    if (cellColection[i].classList.contains('box')) {
+    cellColection[i].classList.remove('box');
+    cellColection[i].removeEventListener('click', clickBox );
     }
+  }
 
-    playing = false;
-    stopTimer(); 
-    click = 0;
-    point.textContent = click;
+  playing = false;
+  stopTimer(); 
+  click = 0;
+  point.textContent = click;
 }
 

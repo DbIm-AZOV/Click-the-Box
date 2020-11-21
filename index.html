@@ -14,8 +14,8 @@
 <body>  
   <header>    
     <div class="container navbar navbar-dark bg-primary ">
-      <div class="container row menu">
-        <div class="col-md-12 "><h1>KICK THE BOX</h1></div>
+      <div class="row menu">
+        <div class="col-12 "><h1>KICK THE BOX</h1></div>
 
         <!-- Buttons -->        
         <div id="start" class="col-2 align-self-end"><input class="btn btn-primary" type="button" value="START"></div>
@@ -46,16 +46,17 @@
   <div  class="container gamefield">
     <div class="row gamefield">
       
-      <div class="col-10 gamefield border border-primary">
-        <div  class="container row gamefield"></div>
+      <div class="col-10 gamefield ">
+        <div  id="gamefield"class=" row gamefield"></div>
       </div>
       
-      <div class="col-2 result border border-primary">         
+      <div class="col-2 result ">         
         <div class="row result">
           <div class="col">
             <div class="card text-white bg-primary mb-3" >
               <div class="card-header">Result table</div>
               <div id="score"class="card-body"></div> 
+              <a id="clear" href="#" class="btn btn-primary">Clear Result</a>
             </div>
           </div>
         </div>       
