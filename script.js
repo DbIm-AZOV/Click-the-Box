@@ -17,7 +17,7 @@ const clear = document.getElementById('clear');
 
 
 results = JSON.parse(localStorage.getItem("results") || "[]");
-resultTable.textContent = JSON.stringify(results).replace( /[ {"} ]/g, " ");
+resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
 newGame.onclick = newGames;
 start.onclick = startAndPaused;
 clear.onclick = clearResult;
@@ -27,7 +27,7 @@ function clearResult() {
   if (confirm('Do you want clear result?')){
     localStorage.clear(); 
     results = JSON.parse(localStorage.getItem("results") || "[]");
-    resultTable.textContent = JSON.stringify(results).replace( /[ {"} ]/g, " ");
+    resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
   } 
 
 }
@@ -147,7 +147,7 @@ function gameOver() {
     results.push(user);
     results.sort((a, b) => a.Result < b.Result ? 1 : -1 );
     localStorage.setItem("results", JSON.stringify(results));
-    resultTable.textContent = JSON.stringify(results).replace( /[ {"} ]/g, " ");  
+    resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
   }
   
   for (let i = 0; i < cellColection.length; i++) {
