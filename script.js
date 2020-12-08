@@ -91,7 +91,17 @@ for (let i = 1; i <= 60; i++) {
   const cell = document.createElement('div');
   cell.className = "coll cell";
   cell.setAttribute('num', i);
-  gamefield.append(cell);    
+  gamefield.append(cell);  
+  
+  gamefield.onclick = function(event) {
+    let target = event.target;
+    if (target.classList.contains('box')) {
+      target.classList.remove('box');
+      point.textContent = click++;
+      createFewBoxes();
+    }
+
+  }
 }
  
 
@@ -109,7 +119,7 @@ function createBox() {
       createBox()};
     
   box.classList.add('box');  
-  box.addEventListener('click', clickBox);  
+    
 }
 
  
@@ -132,13 +142,7 @@ function createFewBoxes() {
 }
 
 
-//клик по ящику
-function clickBox() {
-  point.textContent = click++;
-  this.classList.remove('box');
-  this.removeEventListener('click', clickBox );    
-  createFewBoxes();
-}
+
 
 function gameOver() { 
   results = JSON.parse(localStorage.getItem("results") || "[]");
@@ -153,7 +157,6 @@ function gameOver() {
   for (let i = 0; i < cellColection.length; i++) {
     if (cellColection[i].classList.contains('box')) {
     cellColection[i].classList.remove('box');
-    cellColection[i].removeEventListener('click', clickBox );
     }
   }
 
@@ -162,4 +165,5 @@ function gameOver() {
   click = 0;
   point.textContent = click;
 }
+
 
