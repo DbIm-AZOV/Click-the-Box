@@ -80,7 +80,7 @@ function newGames() {
       if (confirm('Do you want start a New game?')) {        
         gameOver();      
         newGames();
-        click = 1;
+        click = 0;
       } else startTimer();
     }   
 }
@@ -95,9 +95,13 @@ for (let i = 1; i <= 60; i++) {
   gamefield.onclick = function(event) {
     let target = event.target;
     if (target.classList.contains('box')) {
+      if (target.getAttribute("style") == "background-color:red") {point.textContent = click = click+3;}
+      else if (target.getAttribute("style") == "background-color:yellow"){point.textContent = click = click+2;}
+      else
+      {point.textContent =  click = click+1;};
       target.classList.remove('box');
       target.removeAttribute("style", "background-color") 
-      point.textContent = click++;
+      
       createFewBoxes();
     }
   }
