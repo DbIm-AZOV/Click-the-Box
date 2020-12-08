@@ -92,15 +92,14 @@ for (let i = 1; i <= 60; i++) {
   cell.className = "coll cell";
   cell.setAttribute('num', i);
   gamefield.append(cell);  
-  
   gamefield.onclick = function(event) {
     let target = event.target;
     if (target.classList.contains('box')) {
       target.classList.remove('box');
+      target.removeAttribute("style", "background-color") 
       point.textContent = click++;
       createFewBoxes();
     }
-
   }
 }
  
@@ -112,13 +111,21 @@ function createBox() {
     let num = Math.round(Math.random() * (cellColection.length) + 0.5);
     return[num];
     }
-
+  
   let coordinates = generateBox();
   let box = document.querySelector(`[num ="` + coordinates[0] + `"]`);
   if (box.classList.contains('box')) {
       createBox()};
-    
-  box.classList.add('box');  
+   
+   let color;
+   let colorNum = Math.round(Math.random() * (3) - 0.5);
+   if (colorNum == 0 ) {color ="green"}
+   else if (colorNum == 1) {color ="yellow"}
+   else if (colorNum == 2) {color ="red"}
+   else {color = "fuchsia"};
+   
+  box.classList.add('box'); 
+  box.setAttribute("style", "background-color:"+ color);
     
 }
 
@@ -157,6 +164,7 @@ function gameOver() {
   for (let i = 0; i < cellColection.length; i++) {
     if (cellColection[i].classList.contains('box')) {
     cellColection[i].classList.remove('box');
+    cellColection[i].removeAttribute("style", "background-color");
     }
   }
 

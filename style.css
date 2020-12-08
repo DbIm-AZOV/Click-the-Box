@@ -28,8 +28,7 @@
   height: 4rem;    
 }
 
-.box{
-  background-color: red;
+.box{ 
   width: 4rem;
   height: 4rem;    
 }
@@ -38,6 +37,6 @@
 
 #score {
   height: 16rem;
-  width: 7rem;
-  
+  width: 7rem;}
+
 
