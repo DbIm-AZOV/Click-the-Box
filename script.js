@@ -1,6 +1,6 @@
 "use strict"
 let playing = false;
-let click = 1;
+let click = 0;
 let startTime;
 let intervalID;
 let curentTime;
@@ -14,7 +14,6 @@ const resultTable = document.getElementById('score');
 const gamefield = document.getElementById('gamefield');
 const cellColection = document.getElementsByClassName('cell');
 const clear = document.getElementById('clear');
-
 
 results = JSON.parse(localStorage.getItem("results") || "[]");
 resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
@@ -60,8 +59,8 @@ function startAndPaused(){
     stopTimer();
     alert("On paused");
     startTimer();
-  }
-  if ((click == 1) && (playing == false)) {
+      }
+  if ((click == 0) && (playing == false)) {
     newGames();
   }
 }
@@ -73,7 +72,11 @@ function newGames() {
     playing = true;
     timeForGame = 60;
     startTimer();
-    createFewBoxes();        
+    createFewBoxes();
+    let createBoxOnTime= setTimeout(function create(){
+      createFewBoxes();
+      createBoxOnTime = setTimeout(create, 1000);}, 1000); 
+         
   } else {
       timeForGame = curentTime;
       stopTimer();
@@ -95,17 +98,20 @@ for (let i = 1; i <= 60; i++) {
   gamefield.onclick = function(event) {
     let target = event.target;
     if (target.classList.contains('box')) {
-      if (target.getAttribute("style") == "background-color:red") {point.textContent = click = click+3;}
-      else if (target.getAttribute("style") == "background-color:yellow"){point.textContent = click = click+2;}
-      else
-      {point.textContent =  click = click+1;};
+      if (target.getAttribute("style") == "background-color:red") {point.textContent = click +=3;}        
+      else if (target.getAttribute("style") == "background-color:yellow"){point.textContent = click +=2;}
+      else {point.textContent =  click +=1;};
       target.classList.remove('box');
-      target.removeAttribute("style", "background-color") 
-      
+      target.removeAttribute("style", "background-color")         
       createFewBoxes();
     }
   }
 }
+function removeBox(){
+  target.classList.remove('box');
+  target.removeAttribute("style", "background-color") 
+  }
+
  
 
 // создание ящика
@@ -130,8 +136,17 @@ function createBox() {
    
   box.classList.add('box'); 
   box.setAttribute("style", "background-color:"+ color);
+
+  // удаление по времени
+    if (box.getAttribute("style") == "background-color:red") {setTimeout(removeBox, 2000)}        
+    else if (box.getAttribute("style") == "background-color:yellow"){setTimeout(removeBox, 3000)}
+    else {setTimeout(removeBox, 5000)};
     
-}
+    function removeBox(){
+      box.classList.remove('box');
+      box.removeAttribute("style", "background-color")
+  }
+  }
 
  
 // генерация кол-ва кубиков за клик от 0  до 2
@@ -157,7 +172,7 @@ function createFewBoxes() {
 
 function gameOver() { 
   results = JSON.parse(localStorage.getItem("results") || "[]");
-  let user = {Name: prompt(`Game over! Yours score = ${click-1} Enter your name`,''), Result: click - 1};
+  let user = {Name: prompt(`Game over! Yours score = ${click} Enter your name`,''), Result: click};
   if (user.Name != null) {
     results.push(user);
     results.sort((a, b) => a.Result < b.Result ? 1 : -1 );
