@@ -68,6 +68,7 @@ function startAndPaused(){
 
 //новая игра
 function newGames() {
+  createGamefield()
   if (playing == false) {    
     playing = true;
     timeForGame = 60;
@@ -90,11 +91,14 @@ function newGames() {
 
 
 //создаем поле
-for (let i = 1; i <= 60; i++) {
-  const cell = document.createElement('div');
-  cell.className = "coll cell";
-  cell.setAttribute('num', i);
-  gamefield.append(cell);  
+function createGamefield(){
+  for (let i = 1; i <= 60; i++) {
+    const cell = document.createElement('div');
+    cell.className = "coll cell";
+    cell.setAttribute('num', i);
+    gamefield.append(cell);  
+  }
+ 
   gamefield.onclick = function(event) {
     let target = event.target;
     if (target.classList.contains('box')) {
@@ -107,6 +111,8 @@ for (let i = 1; i <= 60; i++) {
     }
   }
 }
+
+
 function removeBox(){
   target.classList.remove('box');
   target.removeAttribute("style", "background-color") 
