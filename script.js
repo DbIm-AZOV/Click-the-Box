@@ -22,14 +22,53 @@ start.onclick = startAndPaused;
 clear.onclick = clearResult;
 
 
-function clearResult() {
-  if (confirm('Do you want clear result?')){
-    localStorage.clear(); 
-    results = JSON.parse(localStorage.getItem("results") || "[]");
-    resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
-  } 
+//создаем поле
 
+  for (let i = 1; i <= 60; i++) {
+    const cell = document.createElement('div');
+    cell.className = "coll cell";
+    cell.setAttribute('num', i);
+    gamefield.append(cell);  
+  }
+ 
+  gamefield.onclick = function(event) {
+    let target = event.target;
+    if (target.classList.contains('box')) {
+      if (target.getAttribute("style") == "background-color:red") {point.textContent = click +=3;}        
+      else if (target.getAttribute("style") == "background-color:yellow"){point.textContent = click +=2;}
+      else if (target.getAttribute("style") == "background:linear-gradient(135deg, orange, blue"){timeForGame +=2}
+      else {point.textContent =  click +=1;};
+      target.classList.remove('box');
+      target.removeAttribute("style", "background-color");
+      target.removeAttribute("style", "background")          
+      createFewBoxes();
+    }
+    else {timeForGame -=2}
+  }
+
+//новая игра
+function newGames() {
+  
+  if (playing == false) {    
+    playing = true;
+    timeForGame = 60;
+    startTimer();
+    createFewBoxes();
+    let createBoxOnTime= setTimeout(function create(){
+      createFewBoxes();
+      createBoxOnTime = setTimeout(create, 1000);}, 1000); 
+         
+  } else {
+      timeForGame = curentTime;
+      stopTimer();
+      if (confirm('Do you want start a New game?')) {        
+        gameOver();      
+        newGames();
+        click = 0;
+      } else startTimer();
+    }   
 }
+
 //таймер
 function startTimer() {
   startTime = Date.now(); 
@@ -52,6 +91,16 @@ function stopTimer() {
 }
 
 
+function clearResult() {
+  if (confirm('Do you want clear result?')){
+    localStorage.clear(); 
+    results = JSON.parse(localStorage.getItem("results") || "[]");
+    resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
+  } 
+
+}
+
+
 //cтарт-пауза
 function startAndPaused(){
   if (playing == true){
@@ -65,62 +114,12 @@ function startAndPaused(){
   }
 }
 
-
-//новая игра
-function newGames() {
-  createGamefield()
-  if (playing == false) {    
-    playing = true;
-    timeForGame = 60;
-    startTimer();
-    createFewBoxes();
-    let createBoxOnTime= setTimeout(function create(){
-      createFewBoxes();
-      createBoxOnTime = setTimeout(create, 1000);}, 1000); 
-         
-  } else {
-      timeForGame = curentTime;
-      stopTimer();
-      if (confirm('Do you want start a New game?')) {        
-        gameOver();      
-        newGames();
-        click = 0;
-      } else startTimer();
-    }   
-}
-
-
-//создаем поле
-function createGamefield(){
-  for (let i = 1; i <= 60; i++) {
-    const cell = document.createElement('div');
-    cell.className = "coll cell";
-    cell.setAttribute('num', i);
-    gamefield.append(cell);  
-  }
- 
-  gamefield.onclick = function(event) {
-    let target = event.target;
-    if (target.classList.contains('box')) {
-      if (target.getAttribute("style") == "background-color:red") {point.textContent = click +=3;}        
-      else if (target.getAttribute("style") == "background-color:yellow"){point.textContent = click +=2;}
-      else {point.textContent =  click +=1;};
-      target.classList.remove('box');
-      target.removeAttribute("style", "background-color")         
-      createFewBoxes();
-    }
-  }
-}
-
-
 function removeBox(){
   target.classList.remove('box');
   target.removeAttribute("style", "background-color") 
   }
 
- 
-
-// создание ящика
+ // создание ящика
 function createBox() {
  
   function generateBox() {
@@ -134,14 +133,15 @@ function createBox() {
       createBox()};
    
    let color;
-   let colorNum = Math.round(Math.random() * (3) - 0.5);
+   let colorNum = Math.round(Math.random() * (4) - 0.5);
    if (colorNum == 0 ) {color ="green"}
    else if (colorNum == 1) {color ="yellow"}
    else if (colorNum == 2) {color ="red"}
-   else {color = "fuchsia"};
+   else {color = "linear-gradient(135deg, orange, blue"};
    
-  box.classList.add('box'); 
-  box.setAttribute("style", "background-color:"+ color);
+  box.classList.add('box');
+  if (colorNum == 3) {box.setAttribute("style", "background:"+ color)} 
+  else {box.setAttribute("style", "background-color:"+ color);}
 
   // удаление по времени
     if (box.getAttribute("style") == "background-color:red") {setTimeout(removeBox, 2000)}        
@@ -174,8 +174,6 @@ function createFewBoxes() {
 }
 
 
-
-
 function gameOver() { 
   results = JSON.parse(localStorage.getItem("results") || "[]");
   let user = {Name: prompt(`Game over! Yours score = ${click} Enter your name`,''), Result: click};
@@ -198,5 +196,3 @@ function gameOver() {
   click = 0;
   point.textContent = click;
 }
-
-
