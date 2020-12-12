@@ -114,51 +114,52 @@ function startAndPaused(){
   }
 }
 
-function removeBox(){
-  target.classList.remove('box');
-  target.removeAttribute("style", "background-color") 
-  }
 
- // создание ящика
-function createBox() {
- 
-  function generateBox() {
-    let num = Math.round(Math.random() * (cellColection.length) + 0.5);
-    return[num];
+
+class Box {
+  create() {    
+    let coordinates = this.coordinates();    
+    let box = document.querySelector(`[num ="` + coordinates[0] + `"]`);
+    box.classList.add('box');
+    this.color(box);
+    this.lifetime(box);
     }
   
-  let coordinates = generateBox();
-  let box = document.querySelector(`[num ="` + coordinates[0] + `"]`);
-  if (box.classList.contains('box')) {
-      createBox()};
-   
+    coordinates(){
+    let num = Math.round(Math.random() * (cellColection.length) + 0.5);
+    return[num];
+  }
+
+  color(box){
    let color;
    let colorNum = Math.round(Math.random() * (4) - 0.5);
    if (colorNum == 0 ) {color ="green"}
    else if (colorNum == 1) {color ="yellow"}
    else if (colorNum == 2) {color ="red"}
    else {color = "linear-gradient(135deg, orange, blue"};
+   if (colorNum == 3) {box.setAttribute("style", "background:"+ color)} 
+   else {box.setAttribute("style", "background-color:"+ color);}
    
-  box.classList.add('box');
-  if (colorNum == 3) {box.setAttribute("style", "background:"+ color)} 
-  else {box.setAttribute("style", "background-color:"+ color);}
-
-  // удаление по времени
+  }
+  
+  lifetime(box){
     if (box.getAttribute("style") == "background-color:red") {setTimeout(removeBox, 2000)}        
     else if (box.getAttribute("style") == "background-color:yellow"){setTimeout(removeBox, 3000)}
     else {setTimeout(removeBox, 5000)};
-    
     function removeBox(){
       box.classList.remove('box');
       box.removeAttribute("style", "background-color")
+    }
   }
-  }
+}
+ 
 
  
 // генерация кол-ва кубиков за клик от 0  до 2
 function createFewBoxes() {
   for (let i = 0; i < (Math.round(Math.random() * (3) - 0.5)); i++) {
-    createBox()
+    let box = new Box();
+    box.create();
   }
         
   let BoxOnField = 0;
@@ -169,7 +170,8 @@ function createFewBoxes() {
     };
   }
     if (BoxOnField == 0) {
-        createBox()
+    let box = new Box();
+    box.create();
     };
 }
 
