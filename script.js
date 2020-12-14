@@ -6,6 +6,7 @@ let intervalID;
 let curentTime;
 let results = [];
 let timeForGame = 60;
+let createBoxOnTime;
 const start = document.getElementById('start');
 const newGame = document.getElementById('new game');
 const point = document.getElementById('point');
@@ -54,7 +55,7 @@ function newGames() {
     timeForGame = 60;
     startTimer();
     createFewBoxes();
-    let createBoxOnTime= setTimeout(function create(){
+    createBoxOnTime= setTimeout(function create(){
       createFewBoxes();
       createBoxOnTime = setTimeout(create, 1000);}, 1000); 
          
@@ -80,10 +81,7 @@ function timer() {
   curentTime = Math.floor(timeForGame - (((Date.now() - startTime) / 1000)));
   timeDisplay.textContent = curentTime;
 
-  if (curentTime <= 0) {
-    stopTimer();
-    gameOver(); 
-  }   
+  if (curentTime <= 0) { gameOver();}   
 }
 
 function stopTimer() {
@@ -118,19 +116,33 @@ function startAndPaused(){
 
 class Box {
   create() {    
-    let coordinates = this.coordinates();    
-    let box = document.querySelector(`[num ="` + coordinates[0] + `"]`);
+    let coordinates = new BoxCoordinates();
+    let box = document.querySelector(`[num ="` + coordinates.generate(cellColection)[0] + `"]`);
     box.classList.add('box');
-    this.color(box);
-    this.lifetime(box);
-    }
+    let boxColor = new BoxColor();
+    boxColor.generate(box);
+    let lifeTime = new Lifetime();
+    lifeTime.get(box);
+  }
+}
+class BoxCoordinates { 
+
+  constructor(cellColection){
+    this.cellColection = cellColection;
+  }
   
-    coordinates(){
+  generate(cellColection) { 
     let num = Math.round(Math.random() * (cellColection.length) + 0.5);
     return[num];
   }
+}
+class BoxColor { 
+  
+  constructor(box){
+    this.box = box;
+  }
 
-  color(box){
+  generate(box){
    let color;
    let colorNum = Math.round(Math.random() * (4) - 0.5);
    if (colorNum == 0 ) {color ="green"}
@@ -139,10 +151,16 @@ class Box {
    else {color = "linear-gradient(135deg, orange, blue"};
    if (colorNum == 3) {box.setAttribute("style", "background:"+ color)} 
    else {box.setAttribute("style", "background-color:"+ color);}
-   
+  }
+} 
+
+class Lifetime {
+  
+  constructor(box){
+    this.box = box;
   }
   
-  lifetime(box){
+  get(box){
     if (box.getAttribute("style") == "background-color:red") {setTimeout(removeBox, 2000)}        
     else if (box.getAttribute("style") == "background-color:yellow"){setTimeout(removeBox, 3000)}
     else {setTimeout(removeBox, 5000)};
@@ -194,7 +212,8 @@ function gameOver() {
   }
 
   playing = false;
-  stopTimer(); 
+  stopTimer();
+  clearTimeout(createBoxOnTime);
   click = 0;
   point.textContent = click;
 }
