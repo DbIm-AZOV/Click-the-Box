@@ -115,19 +115,21 @@ function startAndPaused(){
 
 
 class Box {
-  create() {    
-    let coordinates = new BoxCoordinates();
-    let box = document.querySelector(`[num ="` + coordinates.generate(cellColection)[0] + `"]`);
-    box.classList.add('box');
-    let boxColor = new BoxColor();
-    boxColor.generate(box);
-    let lifeTime = new Lifetime();
-    lifeTime.get(box);
+  constructor() {
+    this.coordinates = new BoxCoordinates();
+    this.boxColor = new BoxColor();
+    this.lifeTime = new Lifetime();
+  }
+  create() {      
+    let box = document.querySelector(`[num ="` + this.coordinates.generate(cellColection)[0] + `"]`);
+    box.classList.add('box');    
+    this.boxColor.generate(box);    
+    this.lifeTime.get(box);
   }
 }
-class BoxCoordinates { 
 
-  constructor(cellColection){
+class BoxCoordinates { 
+  constructor(){
     this.cellColection = cellColection;
   }
   
@@ -136,8 +138,8 @@ class BoxCoordinates {
     return[num];
   }
 }
-class BoxColor { 
-  
+
+class BoxColor {  
   constructor(box){
     this.box = box;
   }
@@ -154,8 +156,7 @@ class BoxColor {
   }
 } 
 
-class Lifetime {
-  
+class Lifetime {  
   constructor(box){
     this.box = box;
   }
