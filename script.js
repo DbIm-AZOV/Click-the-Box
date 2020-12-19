@@ -42,6 +42,8 @@ clear.onclick = clearResult;
       target.classList.remove('box');
       target.removeAttribute("style", "background-color");
       target.removeAttribute("style", "background")          
+      let fewBoxes = new FewBoxes(0, 2);
+      fewBoxes.create();
       createFewBoxes();
     }
     else {timeForGame -=2}
@@ -54,9 +56,11 @@ function newGames() {
     playing = true;
     timeForGame = 60;
     startTimer();
-    createFewBoxes();
+    let fewBoxes = new FewBoxes('0', '2');
+    fewBoxes.create();
     createBoxOnTime= setTimeout(function create(){
-      createFewBoxes();
+      let fewBoxes = new FewBoxes('0', '2');
+      fewBoxes.create();
       createBoxOnTime = setTimeout(create, 1000);}, 1000); 
          
   } else {
@@ -112,16 +116,14 @@ function startAndPaused(){
   }
 }
 
-
-
 class Box {
-  constructor() {
-    this.coordinates = new BoxCoordinates();
-    this.boxColor = new BoxColor();
-    this.lifeTime = new Lifetime();
+  constructor(coordinates, boxColor, lifeTime) {
+    this.coordinates = coordinates; 
+    this.boxColor = boxColor; 
+    this.lifeTime = lifeTime; 
   }
   create() {      
-    let box = document.querySelector(`[num ="` + this.coordinates.generate(cellColection)[0] + `"]`);
+    let box = document.querySelector(`[num ="` + this.coordinates.generate(this.HTMLcolection)[0] + `"]`);
     box.classList.add('box');    
     this.boxColor.generate(box);    
     this.lifeTime.get(box);
@@ -129,12 +131,12 @@ class Box {
 }
 
 class BoxCoordinates { 
-  constructor(){
-    this.cellColection = cellColection;
+  constructor(HTMLcolection){
+    this.HTMLcolection = HTMLcolection;
   }
   
-  generate(cellColection) { 
-    let num = Math.round(Math.random() * (cellColection.length) + 0.5);
+  generate() { 
+    let num = Math.round(Math.random() * (this.HTMLcolection.length) + 0.5);
     return[num];
   }
 }
@@ -175,23 +177,27 @@ class Lifetime {
 
  
 // генерация кол-ва кубиков за клик от 0  до 2
-function createFewBoxes() {
-  for (let i = 0; i < (Math.round(Math.random() * (3) - 0.5)); i++) {
-    let box = new Box();
-    box.create();
+class FewBoxes{
+  constructor(min, max){
+    this.min = min;
+    this.max = max;
   }
-        
-  let BoxOnField = 0;
-    
-  for (let i = 0; i < cellColection.length; i++) {
-    if (cellColection[i].classList.contains('box')) {
+  create(){
+    for (let i = 0; i < (Math.round(this.min - 0.5 + Math.random() * (this.max - this.min + 1))); i++) {
+      let box = new Box(new BoxCoordinates(cellColection), new BoxColor(), new Lifetime());
+      box.create();
+      let BoxOnField = 0;
+      for (let i = 0; i < cellColection.length; i++) {
+        if (cellColection[i].classList.contains('box')) {
         BoxOnField += 1
-    };
+        };
+      }
+      if (BoxOnField == 0) {
+        let box = new Box(new BoxCoordinates(cellColection), new BoxColor(), new Lifetime());
+        box.create();
+      }
+    }
   }
-    if (BoxOnField == 0) {
-    let box = new Box();
-    box.create();
-    };
 }
 
 
