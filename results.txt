@@ -1,1 +1,1 @@
-{}{"Name":"dd","Result":2}{"Name":"asd","Result":0}{"Name":"aa","Result":1}{"Name":"d","Result":2}{"Name":"ss","Result":6}{"Name":"d","Result":1}{"Name":"sadad","Result":0}{"Name":"dd","Result":1}
+"name": "sfsg", "point": "56464"

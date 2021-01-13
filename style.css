@@ -1,0 +1,42 @@
+.container {
+  width: 48rem;    
+}
+
+.body.container{
+ width: 48rem;
+}
+
+.gamefield{
+  background-color: rgb(143, 201, 219);
+}
+
+.result{
+  background-color: rgb(101, 162, 243);
+}
+
+.body.col {
+  width: 4rem;
+}
+
+.body.col-2{
+  width: 8rem;
+}
+
+.cell{
+  border: 0.01rem solid rgb(42, 123, 216);
+  width: 4rem;
+  height: 4rem;    
+}
+
+.box{ 
+  width: 4rem;
+  height: 4rem;    
+}
+.card-body {
+  height: 5rem;}
+
+#score {
+  height: 16rem;
+  width: 7rem;}
+
+
