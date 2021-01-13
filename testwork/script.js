@@ -16,8 +16,7 @@ const gamefield = document.getElementById('gamefield');
 const cellColection = document.getElementsByClassName('cell');
 const clear = document.getElementById('clear');
 
-results = JSON.parse(localStorage.getItem("results") || "[]");
-resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
+getResult(); 
 newGame.onclick = newGames;
 start.onclick = startAndPaused;
 clear.onclick = clearResult;
@@ -69,6 +68,7 @@ function newGames() {
       if (confirm('Do you want start a New game?')) {        
         gameOver();      
         newGames();
+        getResult();
         click = 0;
       } else startTimer();
     }   
@@ -90,16 +90,6 @@ function timer() {
 
 function stopTimer() {
   clearInterval(intervalID);
-}
-
-
-function clearResult() {
-  if (confirm('Do you want clear result?')){
-    localStorage.clear(); 
-    results = JSON.parse(localStorage.getItem("results") || "[]");
-    resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
-  } 
-
 }
 
 
@@ -173,9 +163,7 @@ class Lifetime {
     }
   }
 }
- 
-
- 
+  
 // генерация кол-ва кубиков за клик от 0  до 2
 class FewBoxes{
   constructor(min, max){
@@ -200,16 +188,42 @@ class FewBoxes{
   }
 }
 
+async function getResult(){
+  let response = await fetch('http://localhost:3000/results');
+  return  response.text().then(function(text){
+  resultTable.textContent = text.replace(/[\\[\]{}"]+/g,' ')
+  })
+}
+
+async function saveResult(user){
+  let response = await fetch('http://localhost:3000/results', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(user)
+    });
+    return response
+}
+
+async function clearResult(){
+  if (confirm('Do you want clear result?')){  
+      
+    let response = await fetch('http://localhost:3000/clearResults', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: ''
+    });
+    getResult();
+  }
+}
 
 function gameOver() { 
-  results = JSON.parse(localStorage.getItem("results") || "[]");
-  let user = {Name: prompt(`Game over! Yours score = ${click} Enter your name`,''), Result: click};
-  if (user.Name != null) {
-    results.push(user);
-    results.sort((a, b) => a.Result < b.Result ? 1 : -1 );
-    localStorage.setItem("results", JSON.stringify(results));
-    resultTable.textContent = JSON.stringify(results).replace(/[\[\]{}"]+/g,' ');  
-  }
+    let user = {Name: prompt(`Game over! Yours score = ${click} Enter your name`,''), Result: click};
+  
+    if (user.Name != null) {saveResult(user)}
   
   for (let i = 0; i < cellColection.length; i++) {
     if (cellColection[i].classList.contains('box')) {
@@ -223,4 +237,5 @@ function gameOver() {
   clearTimeout(createBoxOnTime);
   click = 0;
   point.textContent = click;
+  getResult();
 }
