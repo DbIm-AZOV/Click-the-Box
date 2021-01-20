@@ -1,4 +1,4 @@
-https://dbim-azov.github.io/Click-the-Box/
+
 
 ИНСТРУКЦИЯ К ИГРЕ "Click-the-Box".
 
